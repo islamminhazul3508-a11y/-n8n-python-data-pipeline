@@ -1,0 +1,86 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ingest-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c2f78c2b-bd2d-4c7c-8a47-e41d0dc57c44",
+      "name": "Webhook",
+      "webhookId": "86f8cce8-1f86-4d8a-860d-3bcccd2a3ab6"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "for item in _items:\n    body = item[\"json\"].get(\"body\", {})\n    item[\"json\"][\"processed_project\"] = body.get(\"project\", \"\").upper()\n    item[\"json\"][\"pipeline_status\"] = \"SUCCESS\"\n\nreturn _items\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        0
+      ],
+      "id": "dbdebb2a-ee96-4439-a463-a184983accb6",
+      "name": "Code in Python"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        384,
+        0
+      ],
+      "id": "d78e1230-b732-4d01-81d9-4b5d1925284a",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in Python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b0d7b2e4-384a-4fdc-b130-1a4dd4d6137f",
+  "meta": {
+    "instanceId": "1b4bdcadedba0b82e62863ddfb5a08c4ba1a380c3ff3f3e0ab0930a9ebe54673"
+  },
+  "nodeGroups": [],
+  "id": "YreUJdTRpFhNdfLx",
+  "tags": []
+}
